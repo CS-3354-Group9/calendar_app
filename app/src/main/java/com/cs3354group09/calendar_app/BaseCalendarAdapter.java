@@ -128,7 +128,7 @@ public class BaseCalendarAdapter extends BaseAdapter
 
         dayView.setText(gridValue);
 
-        // create date string for comparison
+        // create date string for comparison 
         String date = day_string.get( position );
 
         if ( date.length() == 1 ) {
