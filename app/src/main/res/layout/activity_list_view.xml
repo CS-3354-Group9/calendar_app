@@ -1,0 +1,56 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/LinearLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ListViewActivity"
+    android:background="#34495e">
+
+    <LinearLayout
+        android:id="@+id/LinearLayout2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#34495e"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="15dp">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="List View"
+            android:textStyle="bold"
+            android:textSize="30dp"
+            android:textColor="#FFFFFF"
+            android:gravity="center"
+            android:paddingBottom="5dp"/>
+
+        <Button
+            android:id="@+id/calendar_button"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="#6C7E8F"
+            android:padding="10dp"
+            android:text="@string/calendar_button_name"
+            android:textColor="#FFFFFF"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:gravity="center" />
+
+
+
+        #other buttons TODO
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/list_view_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="5dp">
+    </ListView>
+
+</LinearLayout>
