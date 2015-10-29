@@ -159,7 +159,7 @@
         <GridView
             android:id="@+id/group_view_calendar"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:background="#34495e"
             android:cacheColorHint="#80000000"
             android:gravity="center"
@@ -176,14 +176,6 @@
             android:orientation="vertical" >
         </LinearLayout>
 
-
     </LinearLayout>
-
-    <ListView
-        android:id="@+id/list_view_main"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="5dp">
-    </ListView>
 
 </LinearLayout>

@@ -7,6 +7,7 @@ package com.cs3354group09.calendar_app;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -25,7 +26,7 @@ public class CalendarMainActivity extends Activity
     private ListView calendar_main_list_view;
     private CalendarListAdapter list_adapter;
 
-    String[] eventDesc =
+    static String[] eventDesc =
     {
         "Midterm Exam for CS 4349",
         "6 Year Marriage Anniversary",
@@ -35,7 +36,7 @@ public class CalendarMainActivity extends Activity
         "Test Event"
     };
 
-    String[] eventDates =
+    static String[] eventDates =
     {
         "2015-10-22",
         "2015-10-04",
@@ -59,20 +60,30 @@ public class CalendarMainActivity extends Activity
     @Override
     protected void onCreate( Bundle savedInstanceState )
     {
-        super.onCreate( savedInstanceState );
-        setContentView( R.layout.activity_calender_main );
-        CalendarInfo.date_collection_arr=new ArrayList<>();
+        super.onCreate(savedInstanceState);
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+        {
+            setContentView( R.layout.activity_calender_land );
+        }
+        else
+        {
+            setContentView( R.layout.activity_calender_main );
+            //Set the list view for the main calendar activity.
+            calendar_main_list_view = (ListView) findViewById( R.id.list_view_main );
+            list_adapter=new CalendarListAdapter( CalendarMainActivity.this,R.layout.list_item, CalendarInfo.date_collection_arr );
+            calendar_main_list_view.setAdapter(list_adapter);
+        }
 
+        CalendarInfo.date_collection_arr=new ArrayList<>();
         //Populate the List View class with its data.
         for( int itr = 0; itr < imageId.length; itr++ )
         {
             CalendarInfo.date_collection_arr.add( new CalendarInfo(eventDates[itr], eventDesc[itr], imageId[itr]) );
         }
 
-        //Set the list view for the main calendar activity.
-        calendar_main_list_view = (ListView) findViewById( R.id.list_view_main );
-        list_adapter=new CalendarListAdapter( CalendarMainActivity.this,R.layout.list_item, CalendarInfo.date_collection_arr );
-        calendar_main_list_view.setAdapter(list_adapter);
+
+
+
 
         //Setup Calendar.
         calendarMonth = (GregorianCalendar) GregorianCalendar.getInstance();

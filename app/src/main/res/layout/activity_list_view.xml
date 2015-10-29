@@ -9,7 +9,7 @@
 
     <LinearLayout
         android:id="@+id/LinearLayout2"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#34495e"
         android:gravity="center"
@@ -18,7 +18,7 @@
 
         <TextView
             android:id="@+id/textView"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="List View"
@@ -30,7 +30,7 @@
 
         <Button
             android:id="@+id/calendar_button"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#6C7E8F"
             android:padding="10dp"
@@ -40,17 +40,17 @@
             android:textStyle="bold"
             android:gravity="center" />
 
-
-
         #other buttons TODO
 
     </LinearLayout>
 
-    <ListView
+    <fragment
+        class="com.cs3354group09.calendar_app.eventFragment"
         android:id="@+id/list_view_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="5dp">
-    </ListView>
+    </fragment>
+
 
 </LinearLayout>

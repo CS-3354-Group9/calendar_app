@@ -7,6 +7,7 @@ package com.cs3354group09.calendar_app;
 import java.util.ArrayList;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -21,51 +22,20 @@ public class ListViewActivity extends Activity implements OnClickListener
     private Button calender_button;
 
     //Temporary until figure out storage.
-    String[] eventDesc =
-    {
-        "Midterm Exam for CS 4349",
-        "6 Year Marriage Anniversary",
-        "Fake Christmas Event",
-        "John Doe Birthday",
-        "Cowboys vs. Saints",
-        "Test Event"
-    };
-
-    //Temporary until figure out storage.
-    String[] eventDates =
-    {
-        "2015-22-10",
-        "2015-04-10",
-        "2015-12-10",
-        "2015-01-10",
-        "2015-18-10",
-        "2015-11-11"
-    };
-
-    //Temporary until figure out storage.
-    Integer[] imageId =
-    {
-        R.drawable.applications_education,
-        R.drawable.bookmark,
-        R.drawable.christmass_tree,
-        R.drawable.cookie,
-        R.drawable.football_ball,
-        0
-    };
 
     @Override
     protected void onCreate( Bundle savedInstanceState )
     {
-        super.onCreate( savedInstanceState );
-        setContentView( R.layout.activity_list_view );
-        CalendarInfo.date_collection_arr=new ArrayList<>();
-
-        //Populate the List View class with its data.
-        for( int itr = 0; itr < imageId.length; itr++ )
+        super.onCreate(savedInstanceState);
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
         {
-            CalendarInfo.date_collection_arr.add(new CalendarInfo(eventDates[itr], eventDesc[itr], imageId[itr]));
+            setContentView( R.layout.activity_list_view_land );
         }
-        getWidget();
+        else
+        {
+            setContentView( R.layout.activity_list_view );
+            getWidget();
+        }
     }
 
 
@@ -74,10 +44,6 @@ public class ListViewActivity extends Activity implements OnClickListener
     {
         calender_button = (Button) findViewById( R.id.calendar_button );
         calender_button.setOnClickListener(this);
-
-        activity_list_view = (ListView) findViewById( R.id.list_view_main );
-        list_adapter=new CalendarListAdapter( ListViewActivity.this,R.layout.list_item, CalendarInfo.date_collection_arr );
-        activity_list_view.setAdapter( list_adapter );
     }
 
     @Override
@@ -92,4 +58,6 @@ public class ListViewActivity extends Activity implements OnClickListener
                 break;
         }
     }
+
+
 }
