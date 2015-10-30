@@ -144,7 +144,7 @@ public class BaseCalendarAdapter extends BaseAdapter
         return v;
     }
 
-
+    //comment
     public View setSelected( View view,int pos )
     {
         if ( previous_view != null )

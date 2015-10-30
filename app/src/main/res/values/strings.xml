@@ -4,7 +4,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="calendar_button_name">Calendar</string>
-    <string name="previous_button_text">Previous</string>
+    <string name="previous_button_text">Prev</string>
     <string name="month_text_view_text">January</string>
     <string name="next_button_text">Next</string>
     <string name="sunday_text">S</string>
@@ -14,4 +14,8 @@
     <string name="thursday_text">Th</string>
     <string name="friday_text">F</string>
     <string name="saturday_text">Sa</string>
+    <string name="calendar_button_add">+</string>
+    <string name="event_title">Title</string>
+    <string name="event_date">YYYY/MM/DD</string>
+    <string name="event_time">Time</string>
 </resources>

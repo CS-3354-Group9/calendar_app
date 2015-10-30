@@ -29,7 +29,7 @@
 
                 <Button
                     android:id="@+id/calendar_button_previous"
-                    android:layout_width="75dp"
+                    android:layout_width="70dp"
                     android:layout_height="32dp"
                     android:background="#6C7E8F"
                     android:padding="10dp"
@@ -56,11 +56,6 @@
                     android:textColor="#ffffff"
                     android:textSize="25sp"
                     android:textStyle="bold" />
-            </FrameLayout>
-
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="45dp">
 
                 <Button
                     android:id="@+id/calendar_button_next"
@@ -72,7 +67,23 @@
                     android:textColor="#FFFFFF"
                     android:textSize="11sp"
                     android:textStyle="bold"
-                    android:layout_gravity="center" />
+                    android:layout_gravity="left|center_vertical" />
+
+                <Button
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:text="@string/calendar_button_add"
+                    android:id="@+id/calendar_button_add"
+                    android:layout_gravity="right|bottom"
+                    android:background="#6C7E8F"
+                    android:textColor="@android:color/white" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="45dp">
+
             </FrameLayout>
         </LinearLayout>
 

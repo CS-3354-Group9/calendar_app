@@ -4,19 +4,23 @@ package com.cs3354group09.calendar_app;
  * Created by Jacob on 10/15/2015.
  */
 
-import java.util.ArrayList;
-import java.util.GregorianCalendar;
 import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.GregorianCalendar;
 
 public class CalendarMainActivity extends Activity
 {
@@ -94,15 +98,13 @@ public class CalendarMainActivity extends Activity
 
         //Setup Previous button.
         Button previous = (Button) findViewById( R.id.calendar_button_previous );
-        previous.setOnClickListener( new OnClickListener()
-        {
+        previous.setOnClickListener(new OnClickListener() {
             @Override
-            public void onClick( View v )
-            {
+            public void onClick(View v) {
                 setPreviousMonth();
                 refreshCalendar();
             }
-        } );
+        });
 
         //Setup Next Button.
         Button next = (Button) findViewById( R.id.calendar_button_next );
@@ -115,6 +117,16 @@ public class CalendarMainActivity extends Activity
                 refreshCalendar();
             }
         } );
+
+        //Setup Add Button.
+        Button add = (Button) findViewById( R.id.calendar_button_add );
+        add.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setAddEvent();
+                refreshCalendar();
+            }
+        });
 
         //Set calendar GridView and create onClick to check for event dates on date selected.
         GridView gridview = (GridView) findViewById(R.id.group_view_calendar);
@@ -170,6 +182,13 @@ public class CalendarMainActivity extends Activity
         {
             calendarMonth.set( GregorianCalendar.MONTH, calendarMonth.get(GregorianCalendar.MONTH) - 1 );
         }
+    }
+
+    protected void setAddEvent()
+    {
+        //create dialog box for new event
+        setContentView( R.layout.new_event);
+
     }
 
 
