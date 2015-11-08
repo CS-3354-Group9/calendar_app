@@ -85,10 +85,6 @@ public class CalendarMainActivity extends Activity
             CalendarInfo.date_collection_arr.add( new CalendarInfo(eventDates[itr], eventDesc[itr], imageId[itr]) );
         }
 
-
-
-
-
         //Setup Calendar.
         calendarMonth = (GregorianCalendar) GregorianCalendar.getInstance();
         calendarMonthCopy = (GregorianCalendar) calendarMonth.clone();
@@ -187,7 +183,7 @@ public class CalendarMainActivity extends Activity
     protected void setAddEvent()
     {
         //create dialog box for new event
-        setContentView( R.layout.new_event);
+        //setContentView( R.layout.new_event);
 
     }
 

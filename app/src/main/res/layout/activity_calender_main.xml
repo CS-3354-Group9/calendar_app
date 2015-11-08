@@ -17,7 +17,7 @@
             android:id="@+id/header"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="#34495e"
+            android:background="#537072"
             android:gravity="center"
             android:orientation="horizontal"
             android:padding="10dp"
@@ -53,7 +53,7 @@
                     android:layout_marginTop="0dp"
                     android:gravity="center|top"
                     android:text="@string/month_text_view_text"
-                    android:textColor="#ffffff"
+                    android:textColor="#F4EBDB"
                     android:textSize="25sp"
                     android:textStyle="bold" />
 
@@ -71,11 +71,11 @@
 
                 <Button
                     style="?android:attr/buttonStyleSmall"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:text="@string/calendar_button_add"
                     android:id="@+id/calendar_button_add"
-                    android:layout_gravity="right|bottom"
+                    android:layout_gravity="right|center"
                     android:background="#6C7E8F"
                     android:textColor="@android:color/white" />
             </FrameLayout>
@@ -171,7 +171,7 @@
             android:id="@+id/group_view_calendar"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="#34495e"
+            android:background="#2C4A52"
             android:cacheColorHint="#80000000"
             android:gravity="center"
             android:listSelector="@android:color/transparent"

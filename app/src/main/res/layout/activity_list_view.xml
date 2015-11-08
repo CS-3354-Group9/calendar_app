@@ -24,7 +24,6 @@
             android:text="List View"
             android:textStyle="bold"
             android:textSize="30dp"
-            android:textColor="#FFFFFF"
             android:gravity="center"
             android:paddingBottom="5dp"/>
 
@@ -35,7 +34,6 @@
             android:background="#6C7E8F"
             android:padding="10dp"
             android:text="@string/calendar_button_name"
-            android:textColor="#FFFFFF"
             android:textSize="20dp"
             android:textStyle="bold"
             android:gravity="center" />

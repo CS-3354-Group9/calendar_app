@@ -57,9 +57,9 @@ public class CalendarListAdapter extends ArrayAdapter<CalendarInfo>
             viewHolder.tv_linear_layout.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
             viewHolder.tv_date = (TextView) convertView.findViewById(R.id.tv_date);
             viewHolder.tv_event = (TextView) convertView.findViewById(R.id.tv_event);
-            viewHolder.tv_image = (ImageView) convertView.findViewById(R.id.tv_image);
-            viewHolder.tv_image.setFocusable(false);
-            viewHolder.tv_image.setClickable(false);
+            //viewHolder.tv_image = (ImageView) convertView.findViewById(R.id.tv_image);
+            //viewHolder.tv_image.setFocusable(false);
+            //viewHolder.tv_image.setClickable(false);
             convertView.setTag(viewHolder);
         }
         else
@@ -71,7 +71,7 @@ public class CalendarListAdapter extends ArrayAdapter<CalendarInfo>
         viewHolder.tv_linear_layout.setBackgroundResource(R.drawable.rounded_corners);
         viewHolder.tv_date.setText(list_obj.date);
         viewHolder.tv_event.setText(list_obj.eventDesc);
-        viewHolder.tv_image.setImageResource(list_obj.imageId);
+        //viewHolder.tv_image.setImageResource(list_obj.imageId);
 
         return convertView;
     }
