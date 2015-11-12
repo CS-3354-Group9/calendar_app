@@ -5,11 +5,13 @@ package com.cs3354group09.calendar_app;
  */
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -18,6 +20,7 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.support.v4.app.DialogFragment;
 
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
@@ -30,7 +33,8 @@ public class CalendarMainActivity extends Activity
     private ListView calendar_main_list_view;
     private CalendarListAdapter list_adapter;
 
-    static String[] eventDesc =
+
+    public static String[] eventDesc =
     {
         "Midterm Exam for CS 4349",
         "6 Year Marriage Anniversary",
@@ -85,12 +89,17 @@ public class CalendarMainActivity extends Activity
             CalendarInfo.date_collection_arr.add( new CalendarInfo(eventDates[itr], eventDesc[itr], imageId[itr]) );
         }
 
+
+
+
+
         //Setup Calendar.
         calendarMonth = (GregorianCalendar) GregorianCalendar.getInstance();
         calendarMonthCopy = (GregorianCalendar) calendarMonth.clone();
         cal_adapter = new BaseCalendarAdapter( this, calendarMonth,CalendarInfo.date_collection_arr );
         tv_month = (TextView) findViewById( R.id.tv_month );
-        tv_month.setText( android.text.format.DateFormat.format("MMMM yyyy", calendarMonth) );
+        tv_month.setText(android.text.format.DateFormat.format("MMMM yyyy", calendarMonth));
+        final Dialog eventDialog = new Dialog(this,android.R.style.Theme_Translucent_NoTitleBar);
 
         //Setup Previous button.
         Button previous = (Button) findViewById( R.id.calendar_button_previous );
@@ -104,23 +113,35 @@ public class CalendarMainActivity extends Activity
 
         //Setup Next Button.
         Button next = (Button) findViewById( R.id.calendar_button_next );
-        next.setOnClickListener( new OnClickListener()
-        {
+        next.setOnClickListener(new OnClickListener() {
             @Override
-            public void onClick( View v )
-            {
+            public void onClick(View v) {
                 setNextMonth();
                 refreshCalendar();
             }
-        } );
+        });
 
         //Setup Add Button.
-        Button add = (Button) findViewById( R.id.calendar_button_add );
+        Button add = (Button) findViewById(R.id.calendar_button_add);
         add.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                setAddEvent();
+
+                //Set up add page
+                eventDialog.setContentView(R.layout.new_event);
+                eventDialog.show();
                 refreshCalendar();
+
+                //set up save button
+                Button save = (Button) eventDialog.findViewById(R.id.save_event);
+                save.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        setSaveEvent();
+                        eventDialog.dismiss();
+                        refreshCalendar();
+                    }
+                });
             }
         });
 
@@ -160,7 +181,7 @@ public class CalendarMainActivity extends Activity
     {
         if ( calendarMonth.get(GregorianCalendar.MONTH) == calendarMonth.getActualMaximum(GregorianCalendar.MONTH) )
         {
-            calendarMonth.set( (calendarMonth.get(GregorianCalendar.YEAR) + 1 ), calendarMonth.getActualMinimum( GregorianCalendar.MONTH), 1 );
+            calendarMonth.set( (calendarMonth.get(GregorianCalendar.YEAR) + 1 ), calendarMonth.getActualMinimum(GregorianCalendar.MONTH), 1 );
         }
         else
         {
@@ -180,11 +201,12 @@ public class CalendarMainActivity extends Activity
         }
     }
 
-    protected void setAddEvent()
+    protected void setSaveEvent()
     {
-        //create dialog box for new event
-        //setContentView( R.layout.new_event);
-
+        //save event info entered
+        eventDesc[eventDesc.length-1] = String.valueOf((EditText) findViewById(R.id.event_title));
+        eventDates[eventDates.length-1] = String.valueOf((EditText)findViewById(R.id.event_date));
+        CalendarInfo.date_collection_arr.add( new CalendarInfo(eventDates[eventDates.length-1], eventDesc[eventDesc.length-1], imageId[0]) );
     }
 
 

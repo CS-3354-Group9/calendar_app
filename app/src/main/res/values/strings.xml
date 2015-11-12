@@ -16,6 +16,7 @@
     <string name="saturday_text">Sa</string>
     <string name="calendar_button_add">+</string>
     <string name="event_title">Title</string>
-    <string name="event_date">YYYY/MM/DD</string>
+    <string name="event_date">YYYY-MM-DD</string>
     <string name="event_time">Time</string>
+    <string name="Save">Save</string>
 </resources>

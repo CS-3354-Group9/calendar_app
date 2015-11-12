@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:id="@+id/new_event"
+    android:weightSum="1"
+    tools:context=".CalendarMainActivity"
+    android:baselineAligned="false"
+    android:orientation="vertical">
+
+    <EditText
+        android:layout_width="400dp"
+        android:layout_height="35dp"
+        android:id="@+id/event_title"
+        android:autoText="false"
+        android:background="#34495e"
+        android:inputType="text|textAutoCorrect"
+        android:singleLine="true"
+        android:contentDescription="@string/event_title"
+        android:contextClickable="false"
+        android:hint="@string/event_title"
+        android:imeOptions="actionNext"/>
+
+    <EditText
+        android:layout_width="400dp"
+        android:layout_height="35dp"
+        android:inputType="date"
+        android:ems="10"
+        android:id="@+id/event_date"
+        android:background="#34495e"
+        android:singleLine="true"
+        android:contentDescription="@string/event_title"
+        android:hint="@string/event_date"
+        android:imeOptions="actionNext"/>
+
+    <EditText
+        android:layout_width="400dp"
+        android:layout_height="35dp"
+        android:inputType="time"
+        android:ems="10"
+        android:id="@+id/event_time"
+        android:background="#34495e"
+        android:singleLine="true"
+        android:hint="@string/event_time"
+        android:imeOptions="actionDone"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:id="@+id/scrollView"
+        android:background="#34495e" >
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Save"
+            android:id="@+id/save_event"
+            android:layout_gravity="center_horizontal"
+            android:hint="@string/Save"
+            style="?android:attr/buttonStyleSmall"
+            android:background="#6C7E8F"
+            android:textColor="@android:color/white" />
+    </ScrollView>
+
+</LinearLayout>
