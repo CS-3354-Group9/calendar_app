@@ -6,8 +6,11 @@ package com.cs3354group09.calendar_app;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
 import android.content.res.Configuration;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -23,52 +26,22 @@ import android.widget.TextView;
 import android.support.v4.app.DialogFragment;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-public class CalendarMainActivity extends Activity
+public class CalendarMainActivity extends Activity implements OnClickListener
 {
     public GregorianCalendar calendarMonth, calendarMonthCopy;
     private BaseCalendarAdapter cal_adapter;
     private TextView tv_month;
-    private ListView calendar_main_list_view;
-    private CalendarListAdapter list_adapter;
-
-
-    public static String[] eventDesc =
-    {
-        "Midterm Exam for CS 4349",
-        "6 Year Marriage Anniversary",
-        "Fake Christmas Event",
-        "John Doe Birthday",
-        "Cowboys vs. Saints",
-        "Test Event"
-    };
-
-    static String[] eventDates =
-    {
-        "2015-10-22",
-        "2015-10-04",
-        "2015-10-12",
-        "2015-10-01",
-        "2015-10-18",
-        "2015-11-11"
-    };
-
-    Integer[] imageId =
-    {
-        R.drawable.applications_education,
-        R.drawable.bookmark,
-        R.drawable.christmass_tree,
-        R.drawable.cookie,
-        R.drawable.football_ball,
-        0
-    };
+    private DBAdapter calendarDB;
 
 
     @Override
     protected void onCreate( Bundle savedInstanceState )
     {
         super.onCreate(savedInstanceState);
+
         if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
         {
             setContentView( R.layout.activity_calender_land );
@@ -77,29 +50,16 @@ public class CalendarMainActivity extends Activity
         {
             setContentView( R.layout.activity_calender_main );
             //Set the list view for the main calendar activity.
-            calendar_main_list_view = (ListView) findViewById( R.id.list_view_main );
-            list_adapter=new CalendarListAdapter( CalendarMainActivity.this,R.layout.list_item, CalendarInfo.date_collection_arr );
-            calendar_main_list_view.setAdapter(list_adapter);
+            openDB();
         }
 
-        CalendarInfo.date_collection_arr=new ArrayList<>();
-        //Populate the List View class with its data.
-        for( int itr = 0; itr < imageId.length; itr++ )
-        {
-            CalendarInfo.date_collection_arr.add( new CalendarInfo(eventDates[itr], eventDesc[itr], imageId[itr]) );
-        }
-
-
-
-
-
+        Cursor cursor = calendarDB.getAllRows();
         //Setup Calendar.
         calendarMonth = (GregorianCalendar) GregorianCalendar.getInstance();
         calendarMonthCopy = (GregorianCalendar) calendarMonth.clone();
-        cal_adapter = new BaseCalendarAdapter( this, calendarMonth,CalendarInfo.date_collection_arr );
+        cal_adapter = new BaseCalendarAdapter( this, calendarMonth, cursor );
         tv_month = (TextView) findViewById( R.id.tv_month );
         tv_month.setText(android.text.format.DateFormat.format("MMMM yyyy", calendarMonth));
-        final Dialog eventDialog = new Dialog(this,android.R.style.Theme_Translucent_NoTitleBar);
 
         //Setup Previous button.
         Button previous = (Button) findViewById( R.id.calendar_button_previous );
@@ -121,30 +81,6 @@ public class CalendarMainActivity extends Activity
             }
         });
 
-        //Setup Add Button.
-        Button add = (Button) findViewById(R.id.calendar_button_add);
-        add.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                //Set up add page
-                eventDialog.setContentView(R.layout.new_event);
-                eventDialog.show();
-                refreshCalendar();
-
-                //set up save button
-                Button save = (Button) eventDialog.findViewById(R.id.save_event);
-                save.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        setSaveEvent();
-                        eventDialog.dismiss();
-                        refreshCalendar();
-                    }
-                });
-            }
-        });
-
         //Set calendar GridView and create onClick to check for event dates on date selected.
         GridView gridview = (GridView) findViewById(R.id.group_view_calendar);
         gridview.setAdapter(cal_adapter);
@@ -152,12 +88,11 @@ public class CalendarMainActivity extends Activity
         {
             public void onItemClick( AdapterView<?> parent, View v, int position, long id )
             {
-                ((BaseCalendarAdapter) parent.getAdapter()).setSelected(v,position);
-                String selectedGridDate = BaseCalendarAdapter.day_string
-                        .get(position);
+                ((BaseCalendarAdapter) parent.getAdapter()).setSelected(v, position);
+                String selectedGridDate = BaseCalendarAdapter.day_string.get(position);
 
-                String[] separatedTime = selectedGridDate.split("-");
-                String gridValueString = separatedTime[2].replaceFirst("^0*","");
+                String separatedTime = selectedGridDate.substring(6, 8);
+                String gridValueString = separatedTime.replaceFirst("^0*","");
                 int gridValue = Integer.parseInt(gridValueString);
 
                 if ( (gridValue > 10) && (position < 8) )
@@ -171,11 +106,16 @@ public class CalendarMainActivity extends Activity
                 }
                 ((BaseCalendarAdapter) parent.getAdapter()).setSelected( v,position );
 
-                ((BaseCalendarAdapter) parent.getAdapter()).checkIfEventDate( selectedGridDate, CalendarMainActivity.this );
+                ((BaseCalendarAdapter) parent.getAdapter()).checkIfEventDate( selectedGridDate, v );
             }
         } );
     }
 
+    public void openDB()
+    {
+        calendarDB = new DBAdapter(this);
+        calendarDB.open();
+    }
 
     protected void setNextMonth()
     {
@@ -201,20 +141,43 @@ public class CalendarMainActivity extends Activity
         }
     }
 
-    protected void setSaveEvent()
-    {
-        //save event info entered
-        eventDesc[eventDesc.length-1] = String.valueOf((EditText) findViewById(R.id.event_title));
-        eventDates[eventDates.length-1] = String.valueOf((EditText)findViewById(R.id.event_date));
-        CalendarInfo.date_collection_arr.add( new CalendarInfo(eventDates[eventDates.length-1], eventDesc[eventDesc.length-1], imageId[0]) );
-    }
-
 
     //Function to refresh the calendar page if user clicks on a date.
     public void refreshCalendar()
     {
         cal_adapter.refreshDays();
         cal_adapter.notifyDataSetChanged();
-        tv_month.setText(android.text.format.DateFormat.format( "MMMM yyyy", calendarMonth) );
+        tv_month.setText(android.text.format.DateFormat.format("MMMM yyyy", calendarMonth));
+    }
+
+
+    @Override
+    public void onClick(View v)
+    {
+        Intent intent;
+        switch ( v.getId() )
+        {
+            case R.id.add_event_button:
+                startActivity(new Intent(CalendarMainActivity.this,addEvent.class));
+                break;
+            case R.id.daily_view_button:
+                intent = new Intent(CalendarMainActivity.this, dailyActivityView.class);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+                finish();
+                break;
+            case R.id.weekly_view_button:
+                intent = new Intent(CalendarMainActivity.this, CalendarWeeklyView.class);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+                break;
+            case R.id.list_event_button:
+                intent = new Intent(CalendarMainActivity.this, ListViewActivity.class);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+                break;
+            default:
+                break;
+        }
     }
 }

@@ -14,7 +14,11 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +39,8 @@ public class BaseCalendarAdapter extends BaseAdapter
     public GregorianCalendar previousMonth;    //Used to get previous month for getting complete view.
     public GregorianCalendar previousMonthMaxSet;
     public static List<String> day_string;
-    public ArrayList<CalendarInfo>  date_collection_arr;
+    public Cursor cursor;
+    DBAdapter calendarDB;
 
     int firstDay;
     int maxWeekNumber;
@@ -47,9 +52,9 @@ public class BaseCalendarAdapter extends BaseAdapter
     DateFormat df;
 
 
-    public BaseCalendarAdapter( Context context, GregorianCalendar monthCalendar, ArrayList<CalendarInfo> date_collection_arr )
+    public BaseCalendarAdapter( Context context, GregorianCalendar monthCalendar, Cursor cursor )
     {
-        this.date_collection_arr=date_collection_arr;
+        this.cursor = cursor;
         BaseCalendarAdapter.day_string = new ArrayList<>();
         Locale.setDefault(Locale.US);
         month = monthCalendar;
@@ -58,7 +63,7 @@ public class BaseCalendarAdapter extends BaseAdapter
         month.set(GregorianCalendar.DAY_OF_MONTH, 1);
 
         this.items = new ArrayList<>();
-        df = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        df = new SimpleDateFormat("yyyyMMdd", Locale.US);
         currentDateString = df.format(selectedDate.getTime());
         refreshDays();
 
@@ -96,9 +101,9 @@ public class BaseCalendarAdapter extends BaseAdapter
         }
 
         dayView = (TextView) v.findViewById( R.id.date );
-        String[] separatedTime = day_string.get(position).split( "-" );
+        String separatedTime = day_string.get(position).substring(6, 8);
 
-        String gridValue = separatedTime[2].replaceFirst( "^0*", "" );
+        String gridValue = separatedTime.replaceFirst("^0*", "");
         if ( (Integer.parseInt(gridValue) > 1) && (position < firstDay) )
         {
             dayView.setTextColor( Color.GRAY );
@@ -152,7 +157,7 @@ public class BaseCalendarAdapter extends BaseAdapter
             previous_view.setBackgroundColor(Color.parseColor( "#343434" ) );
         }
 
-        view.setBackgroundColor( Color.parseColor("#6C7E8F") );
+        view.setBackgroundColor(Color.parseColor("#6C7E8F"));
 
         int len=day_string.size();
         if ( len>pos )
@@ -195,8 +200,8 @@ public class BaseCalendarAdapter extends BaseAdapter
         for ( int n = 0; n < monthLength; n++ )
         {
             itemValue = df.format(previousMonthMaxSet.getTime());
-            previousMonthMaxSet.add( GregorianCalendar.DATE, 1 );
-            day_string.add( itemValue );
+            previousMonthMaxSet.add(GregorianCalendar.DATE, 1);
+            day_string.add(itemValue);
 
         }
     }
@@ -219,52 +224,79 @@ public class BaseCalendarAdapter extends BaseAdapter
 
     public void setEventView(View v,int pos,TextView txt){
 
-        int len=CalendarInfo.date_collection_arr.size();
-        for (int i = 0; i < len; i++) {
-            CalendarInfo cal_obj=CalendarInfo.date_collection_arr.get(i);
-            String date=cal_obj.date;
+        cursor.moveToFirst();
+        while( !cursor.isAfterLast() )
+        {
+            String date = cursor.getString(cursor.getColumnIndex(DBAdapter.KEY_DATE));
             int len1=day_string.size();
-            if (len1>pos) {
+            if (len1>pos)
+            {
 
-                if (day_string.get(pos).equals(date)) {
-                    v.setBackgroundColor(Color.parseColor("#724A49"));
+                if (day_string.get(pos).equals(date))
+                {
+                    v.setBackgroundColor(Color.parseColor(cursor.getString(cursor.getColumnIndex(DBAdapter.KEY_COLOR))));
 
                     txt.setTextColor(Color.WHITE);
                 }
-            }}
+            }
+            cursor.moveToNext();
+        }
+    }
 
+    public void openDB()
+    {
+        calendarDB = new DBAdapter(context);
+        calendarDB.open();
+    }
 
+    public String getEventNames(String date)
+    {
+        String[] condition = {date};
+        String returnString = "";
+        openDB();
+        Cursor tempCursor = calendarDB.getColumnWithDate(condition);
 
+        tempCursor.moveToFirst();
+        returnString = "\n" + tempCursor.getString(tempCursor.getColumnIndex(DBAdapter.KEY_NAME)) + "\n";
+        while( tempCursor.moveToNext() )
+        {
+            returnString += tempCursor.getString(tempCursor.getColumnIndex(DBAdapter.KEY_NAME)) + "\n";
+        }
+        return returnString;
     }
 
 
-    public void checkIfEventDate(String date,final Activity act){
-
-        int len=CalendarInfo.date_collection_arr.size();
-
-        for ( int i = 0; i < len; i++ )
+    public void checkIfEventDate(final String date,final View view)
+    {
+        cursor.moveToFirst();
+        while( !cursor.isAfterLast() )
         {
-            CalendarInfo cal_collection=CalendarInfo.date_collection_arr.get(i);
-            String event_date=cal_collection.date;
-            String event_message=cal_collection.eventDesc;
-
+            String event_date = cursor.getString(cursor.getColumnIndex(DBAdapter.KEY_DATE));
+            String event_names = "";
             if ( date.equals(event_date) )
             {
+                event_names = getEventNames(date);
+                view.setBackgroundColor(Color.parseColor(cursor.getString(cursor.getColumnIndex(DBAdapter.KEY_COLOR))));
+
 
                 Toast.makeText(context, "You have event on this date: "+event_date, Toast.LENGTH_LONG).show();
                 //Create an alert dialog to display message. TEMPORARY
                 //TODO replace with fragment that contains advanced details.
                 new AlertDialog.Builder(context)
-                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setIcon(android.R.drawable.ic_menu_my_calendar)
                         .setTitle("Date: " + event_date)
-                        .setMessage("Event: " + event_message)
-                        .setPositiveButton("OK", new android.content.DialogInterface.OnClickListener() {
+                        .setMessage("\t\t\tEvents On This Day: \n" + event_names)
+                        .setPositiveButton("GO TO DAILY VIEW", new android.content.DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                act.finish();
+                                Intent intent = new Intent(context, dailyActivityView.class);
+                                intent.putExtra("pickedDay", date);
+                                context.startActivity(intent);
                             }
-                        }).show();
+                        })
+                        .setNegativeButton("CANCEL", null).show();
                 break;
             }
+            cursor.moveToNext();
         }
     }
 

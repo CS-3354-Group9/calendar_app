@@ -19,12 +19,44 @@
         </activity>
 
         <activity
-            android:name=".EventDetailsActivity"
+            android:name=".eventOverview"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".addEvent"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
+        </activity>
+
+        <activity
+        android:name=".CalendarWeeklyView"
+        android:label="@string/app_name" >
+        <intent-filter>
+            <action android:name="android.intent.action.VIEW" />
+        </intent-filter>
+    </activity>
+
+    <activity
+        android:name=".dailyActivityView"
+        android:label="@string/app_name" >
+        <intent-filter>
+            <action android:name="android.intent.action.VIEW" />
+        </intent-filter>
+    </activity>
+
+    <activity
+        android:name=".updateOverview"
+        android:label="@string/app_name" >
+        <intent-filter>
+            <action android:name="android.intent.action.VIEW" />
+        </intent-filter>
+    </activity>
 
 
         <activity

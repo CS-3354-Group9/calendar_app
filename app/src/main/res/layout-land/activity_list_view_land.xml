@@ -8,21 +8,22 @@
     tools:context=".ListViewActivity"
     android:background="#34495e">
 
-    <fragment
+    <ListView
         class="com.cs3354group09.calendar_app.eventFragment"
         android:id="@+id/list_view_main"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="2">
 
-    </fragment>
+    </ListView>
 
-    <FrameLayout
+    <LinearLayout
         android:id="@+id/event_details"
         android:layout_width="0dp"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         android:background="?android:attr/detailsElementBackground"
         android:layout_weight="3">
-    </FrameLayout>
+    </LinearLayout>
 
 </LinearLayout>

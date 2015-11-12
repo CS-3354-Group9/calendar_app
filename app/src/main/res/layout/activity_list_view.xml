@@ -5,50 +5,141 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".ListViewActivity"
-    android:background="#34495e">
+    android:background="@mipmap/blueback">
+
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CALENDAR APP"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:textSize="25sp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginTop="15dp"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
 
     <LinearLayout
         android:id="@+id/LinearLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#34495e"
+        android:background="#00000000"
         android:gravity="center"
-        android:orientation="vertical"
-        android:padding="15dp">
+        android:orientation="horizontal">
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/darker_gray" />
+        <ImageButton
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:id="@+id/list_event_button"
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="List View"
-            android:textStyle="bold"
-            android:textSize="30dp"
-            android:gravity="center"
-            android:paddingBottom="5dp"/>
+            android:background="#00000000"
+            android:src="@mipmap/list"
+            android:clickable="true"
+            android:onClick="onClick" />
 
-        <Button
-            android:id="@+id/calendar_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#6C7E8F"
-            android:padding="10dp"
-            android:text="@string/calendar_button_name"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            android:gravity="center" />
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/darker_gray" />
 
+        <ImageButton
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:id="@+id/calendar_event_button"
+            android:src="@mipmap/monthpic"
+            android:background="#00000000"
+            android:clickable="true"
+            android:onClick="onClick" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/darker_gray" />
+
+        <ImageButton
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:clickable="true"
+            android:onClick="onClick"
+            android:id="@+id/weekly_view_button"
+            android:src="@mipmap/weekpic"
+            android:background="#00000000" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/darker_gray" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/darker_gray" />
+
+        <ImageButton
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:clickable="true"
+            android:onClick="onClick"
+            android:id="@+id/daily_view_button"
+            android:background="#00000000"
+            android:src="@mipmap/calendaricon" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/darker_gray" />
+
+
+
+
+
+        <ImageButton
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:id="@+id/add_event_button"
+            android:background="#00000000"
+            android:src="@mipmap/addicon"
+            android:clickable="true"
+            android:onClick="onClick" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/darker_gray" />
         #other buttons TODO
 
     </LinearLayout>
 
-    <fragment
-        class="com.cs3354group09.calendar_app.eventFragment"
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        android:layout_marginBottom="5dp" />
+
+    <ListView
         android:id="@+id/list_view_main"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="5dp">
-    </fragment>
+        android:layout_height="fill_parent"
+        android:paddingTop="5dp"
+        android:background="#00000000"
+        android:clickable="true"
+        android:contextClickable="false">
+    </ListView>
 
 
 </LinearLayout>
